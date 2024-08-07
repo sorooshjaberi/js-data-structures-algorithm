@@ -25,6 +25,11 @@ class Queue<T = unknown> {
     return this._linkedList.peekFirst();
   }
 
+  reverse() {
+    this._linkedList.reverse();
+    return this;
+  }
+
   isEmpty() {
     return this._linkedList.isEmpty();
   }
@@ -41,5 +46,8 @@ queue.enqueue(2);
 queue.enqueue(3);
 queue.enqueue(5);
 queue.dequeue();
+console.log(queue);
 
-console.log(queue.toArray());
+const rev = queue.reverse();
+
+console.log(rev.toArray());

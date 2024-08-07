@@ -1,3 +1,5 @@
+import { Stack } from "../stacks";
+
 class StackNode<T = unknown> {
   prevNode: StackNode<T> | null;
   nextNode: StackNode<T> | null;
@@ -35,8 +37,11 @@ export class BidirectionalLinkedList<T = unknown> {
   popFirst() {
     if (!this.isEmpty()) {
       this.length--;
+      this.headNode.nextNode.setPrevNode(null)
       const headValue = this.headNode!.value;
       this.headNode = this.headNode!.nextNode;
+      
+      
 
       return headValue;
     }
@@ -91,6 +96,7 @@ export class BidirectionalLinkedList<T = unknown> {
     }
   }
 
+
   peek() {
     if (this.isSingleValue()) {
       const lastNode = this.tailNode;
@@ -117,11 +123,32 @@ export class BidirectionalLinkedList<T = unknown> {
     let iteratee = this.headNode;
 
     while (iteratee) {
+      console.log(iteratee)
       arr.push(iteratee.value);
       iteratee = iteratee.nextNode;
     }
 
     return arr;
+  }
+
+  reverse() {
+    let iteratee = this.headNode;
+
+    while (iteratee) {
+      const prevNextNode = iteratee.nextNode;
+      const prevPrevNode = iteratee.prevNode;
+
+      iteratee.setPrevNode(prevNextNode);
+      iteratee.setNextNode(prevPrevNode);
+
+      iteratee = prevNextNode;
+    }
+
+    const prevLastNode = this.tailNode;
+    this.tailNode = this.headNode;
+    this.headNode = prevLastNode;
+
+    return this;
   }
 }
 function reverseString(str: string) {
