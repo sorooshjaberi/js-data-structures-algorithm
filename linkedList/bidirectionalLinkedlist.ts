@@ -34,14 +34,41 @@ export class BidirectionalLinkedList<T = unknown> {
     return this.headNode === this.tailNode;
   }
 
+  find(predecator: (value: T) => boolean) {
+    let iteratee = this.headNode;
+    while (iteratee) {
+      const didFind = predecator(iteratee.value);
+      if (didFind) {
+        return iteratee.value;
+      }
+
+      iteratee = iteratee.nextNode;
+    }
+    return
+  }
+
+  removeCb(predecator: (value: T) => boolean) {
+    let iteratee = this.headNode;
+    while (iteratee) {
+      const didFind = predecator(iteratee.value);
+      if (didFind) {
+        iteratee.prevNode?.setNextNode(iteratee.nextNode);
+        iteratee.nextNode?.setPrevNode(iteratee.prevNode);
+
+        return iteratee.value;
+      }
+
+      iteratee = iteratee.nextNode;
+    }
+    return
+  }
+
   popFirst() {
     if (!this.isEmpty()) {
       this.length--;
-      this.headNode.nextNode.setPrevNode(null)
+      this.headNode.nextNode.setPrevNode(null);
       const headValue = this.headNode!.value;
       this.headNode = this.headNode!.nextNode;
-      
-      
 
       return headValue;
     }
@@ -96,7 +123,6 @@ export class BidirectionalLinkedList<T = unknown> {
     }
   }
 
-
   peek() {
     if (this.isSingleValue()) {
       const lastNode = this.tailNode;
@@ -123,7 +149,7 @@ export class BidirectionalLinkedList<T = unknown> {
     let iteratee = this.headNode;
 
     while (iteratee) {
-      console.log(iteratee)
+      console.log(iteratee);
       arr.push(iteratee.value);
       iteratee = iteratee.nextNode;
     }
